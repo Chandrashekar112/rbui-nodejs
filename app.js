@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true })).use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("Successfull run allication");
+  res.send("Server running Successfully");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",

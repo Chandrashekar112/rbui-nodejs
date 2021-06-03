@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true })).use(bodyParser.json());
 
 const port = process.env.PORT || 5000;
 
-app.get("/v1/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Server running Successfully");
   // res.setHeader("Access-Control-Allow-Origin", "*");
   // res.header(
@@ -33,8 +33,8 @@ pool.connect((err) => {
 const orderRouter = require("./routers/order");
 const retailerRouter = require("./routers/retailer");
 
-app.use("/order", orderRouter);
-app.use("/retailer", retailerRouter);
+app.use("/v1/api/order", orderRouter);
+app.use("/v1/api/retailer", retailerRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("../build"));

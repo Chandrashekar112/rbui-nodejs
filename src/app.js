@@ -1,7 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const pool = require("./src/modules/pool");
+const path = require("path");
+
+const pool = require("./modules/pool");
 require("dotenv/config");
 
 const app = express();
@@ -9,15 +11,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true })).use(bodyParser.json());
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
   res.send("Server running Successfully");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
   res.end();
 });
 
@@ -28,11 +30,18 @@ pool.connect((err) => {
 });
 // });
 
-const orderRouter = require("./src/routers/order");
-const retailerRouter = require("./src/routers/retailer");
+const orderRouter = require("./routers/order");
+const retailerRouter = require("./routers/retailer");
 
 app.use("/order", orderRouter);
 app.use("/retailer", retailerRouter);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../build"));
+  app.get("*", (req, res) => {
+    res.send(path.join(__dirname, "build", "index.html")); ///relative path
+  });
+}
 
 app.listen(port, () => {
   console.log("Server running Successfully in the port", port);

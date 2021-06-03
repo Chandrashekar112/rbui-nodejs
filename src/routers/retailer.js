@@ -2,9 +2,14 @@ const express = require("express");
 
 const router = express.Router();
 
-const { getRetailer } = require("../controllers/retailerController");
+const {
+  getRetailer,
+  getCompanyId,
+  getRetailerName,
+} = require("../controllers/retailerController");
 
 router.get("/", getRetailer);
-// router.get("/:company_id", filterRetailer);
+router.get("/company_ids", getCompanyId);
+router.get("/retailer_names", getRetailerName);
 
 module.exports = router;

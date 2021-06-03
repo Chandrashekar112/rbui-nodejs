@@ -9,7 +9,7 @@ const getRetailer = async (req, res) => {
 
   await pool.connect(function (err) {
     if (err) throw err;
-    pool.query("SELECT * FROM rb.retailer_setting", (error, results) => {
+    pool.query("SELECT * FROM rb.retailer_setting2", (error, results) => {
       if (error) {
         throw error;
       }
@@ -21,6 +21,54 @@ const getRetailer = async (req, res) => {
   });
 };
 
+const getCompanyId = async (req, res) => {
+  const returnMessage = {
+    isError: true,
+    data: null,
+    message: "Error occured",
+  };
+
+  await pool.connect(function (err) {
+    if (err) throw err;
+    pool.query(
+      "SELECT company_id FROM rb.retailer_setting2",
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        returnMessage.isError = false;
+        returnMessage.message = "Records found";
+        returnMessage.data = results.rows;
+        res.status(200).json(returnMessage);
+      }
+    );
+  });
+};
+
+const getRetailerName = async (req, res) => {
+  const returnMessage = {
+    isError: true,
+    data: null,
+    message: "Error occured",
+  };
+
+  await pool.connect(function (err) {
+    if (err) throw err;
+    pool.query(
+      "SELECT retailer_name FROM rb.retailer_setting2",
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        returnMessage.isError = false;
+        returnMessage.message = "Records found";
+        returnMessage.data = results.rows;
+        res.status(200).json(returnMessage);
+      }
+    );
+  });
+};
+
 // const filterRetailer = async (req, res) => {
 //   const returnMessage = {
 //     isError: true,
@@ -28,12 +76,12 @@ const getRetailer = async (req, res) => {
 //     message: "Error occured",
 //   };
 
-//   let company_id = parseInt(req.params.company_id);
+//   // let company_id = parseInt(req.params.company_id);
 //   await pool.connect(function (err) {
 //     if (err) throw err;
 //     pool.query(
-//       "SELECT * FROM rb.retailer_setting WHERE company_id =$1",
-//       [company_id],
+//       "SELECT * FROM rb.retailer_setting WHERE company_id=$1",
+//       [req.params.company_id],
 //       (error, results) => {
 //         if (error) {
 //           throw error;
@@ -51,4 +99,6 @@ const getRetailer = async (req, res) => {
 
 module.exports = {
   getRetailer,
+  getCompanyId,
+  getRetailerName,
 };

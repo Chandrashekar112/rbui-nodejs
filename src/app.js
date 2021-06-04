@@ -31,8 +31,8 @@ pool.connect((err) => {
 const orderRouter = require("./routers/order");
 const retailerRouter = require("./routers/retailer");
 
-app.use("/order", orderRouter);
-app.use("/retailer", retailerRouter);
+app.use("/v1/api/order", orderRouter);
+app.use("/v1/api/retailer", retailerRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("../build"));

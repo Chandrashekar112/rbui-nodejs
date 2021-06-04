@@ -23,18 +23,16 @@ app.get("/", (req, res) => {
   res.end();
 });
 
-// app.get("/retailer", (req, res) => {
 pool.connect((err) => {
   if (err) throw err;
   console.log("connected database");
 });
-// });
 
 const orderRouter = require("./routers/order");
 const retailerRouter = require("./routers/retailer");
 
-app.use("/v1/api/order", orderRouter);
-app.use("/v1/api/retailer", retailerRouter);
+app.use("/order", orderRouter);
+app.use("/retailer", retailerRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("../build"));

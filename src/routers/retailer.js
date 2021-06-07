@@ -6,6 +6,7 @@ const {
   getRetailer,
   RetailerState,
   CreateRetailer,
+  UpdateRetailer,
 } = require("../controllers/retailerController");
 
 router.get("/", getRetailer);
@@ -13,5 +14,6 @@ router.get("/", getRetailer);
 // router.get("/retailer_names", getRetailerName);
 router.get("/retailer_state", RetailerState);
 router.post("/addRetailer", CreateRetailer);
+router.put("/:id", UpdateRetailer);
 
 module.exports = router;

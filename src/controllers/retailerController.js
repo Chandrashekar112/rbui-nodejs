@@ -113,7 +113,7 @@ const UpdateRetailer = async (req, res) => {
     message: "Error occured",
   };
 
-  const id = parseInt(req.params.id);
+  const company_id = req.params.id;
 
   const {
     retailer_name,
@@ -130,12 +130,11 @@ const UpdateRetailer = async (req, res) => {
     shipping_non_fedex,
     retailer_contrib_free_ship,
     dw_contrib_free_ship,
-    company_id,
   } = req.body;
   await pool.connect(function (err) {
     if (err) throw err;
     pool.query(
-      "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15,company_id=$16 WHERE id=$17",
+      "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
       [
         retailer_name,
         retailer_state,
@@ -153,14 +152,13 @@ const UpdateRetailer = async (req, res) => {
         retailer_contrib_free_ship,
         dw_contrib_free_ship,
         company_id,
-        id,
       ],
       (error, results) => {
         if (error) {
           throw error;
         }
         returnMessage.isError = false;
-        returnMessage.message = `Successfully Updated the retailer${id}`;
+        returnMessage.message = `Successfully Updated the retailer${company_id}`;
         returnMessage.data = results.rows;
         res.status(200).json(returnMessage);
       }

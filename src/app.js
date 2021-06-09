@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 
-const pool = require("./modules/pool");
+const pool = require("./controllers/config");
 require("dotenv/config");
 
 const app = express();

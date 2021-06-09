@@ -1,4 +1,4 @@
-const pool = require("../modules/pool");
+const pool = require("./config");
 
 const getOrders = async (req, res) => {
   await pool.connect(function (err) {

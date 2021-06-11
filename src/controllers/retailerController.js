@@ -9,7 +9,7 @@ const getRetailer = async (req, res) => {
   await pool.connect(function (err) {
     if (err) throw err;
     pool.query(
-      "SELECT * FROM rb.retailer_setting2 ORDER BY company_id ASC",
+      "SELECT * FROM rb.retailer_setting2 ORDER BY retailer_name ASC",
       (error, results) => {
         if (error) {
           throw error;
@@ -124,14 +124,14 @@ const CreateRetailer = async (req, res) => {
                 );
               } else {
                 returnMessage.isError = true;
-                returnMessage.message = "Retailer Name is alredy existed";
+                returnMessage.message = "Retailer Name is already existing";
                 res.status(400).json(returnMessage);
               }
             }
           );
         } else {
           returnMessage.isError = true;
-          returnMessage.message = "Company Id is alredy existed";
+          returnMessage.message = "Company id is already existing";
           res.status(400).json(returnMessage);
         }
       }
@@ -167,65 +167,94 @@ const UpdateRetailer = async (req, res) => {
   await pool.connect(function (err) {
     if (err) throw err;
     pool.query(
-      "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
-      [
-        retailer_name,
-        retailer_state,
-        "ORDERTOTAL",
-        include_tax,
-        include_ccfee,
-        shipping_cost_ground,
-        shipping_cost_2day,
-        shipping_cost_overnight,
-        rb_percent_sales,
-        retailer_percent_sales,
-        credit_card_fee_percent,
-        shipping_fedex,
-        shipping_non_fedex,
-        retailer_contrib_free_ship,
-        dw_contrib_free_ship,
-        company_id,
-      ],
+      "SELECT * FROM rb.retailer_setting2 WHERE retailer_name=$1",
+      [retailer_name],
       (error, results) => {
         if (error) {
           throw error;
         }
-        returnMessage.isError = false;
-        returnMessage.message = `Successfully Updated the retailer ${company_id}`;
-        returnMessage.data = results.rows;
-        res.status(200).json(returnMessage);
+
+        if (!results.rows.length) {
+          pool.query(
+            "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
+            [
+              retailer_name,
+              retailer_state,
+              "ORDERTOTAL",
+              include_tax,
+              include_ccfee,
+              shipping_cost_ground,
+              shipping_cost_2day,
+              shipping_cost_overnight,
+              rb_percent_sales,
+              retailer_percent_sales,
+              credit_card_fee_percent,
+              shipping_fedex,
+              shipping_non_fedex,
+              retailer_contrib_free_ship,
+              dw_contrib_free_ship,
+              company_id,
+            ],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+              returnMessage.isError = false;
+              returnMessage.message = `Successfully Updated the retailer ${company_id}`;
+              returnMessage.data = results.rows;
+              res.status(200).json(returnMessage);
+            }
+          );
+        } else {
+          pool.query(
+            "SELECT * FROM rb.retailer_setting2 WHERE company_id=$1",
+            [company_id],
+            (error, results) => {
+              if (error) throw error;
+              if (results.rows[0].retailer_name === retailer_name) {
+                pool.query(
+                  "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
+                  [
+                    retailer_name,
+                    retailer_state,
+                    "ORDERTOTAL",
+                    include_tax,
+                    include_ccfee,
+                    shipping_cost_ground,
+                    shipping_cost_2day,
+                    shipping_cost_overnight,
+                    rb_percent_sales,
+                    retailer_percent_sales,
+                    credit_card_fee_percent,
+                    shipping_fedex,
+                    shipping_non_fedex,
+                    retailer_contrib_free_ship,
+                    dw_contrib_free_ship,
+                    company_id,
+                  ],
+                  (error, results) => {
+                    if (error) {
+                      throw error;
+                    }
+                    returnMessage.isError = false;
+                    returnMessage.message = `Successfully Updated the retailer ${company_id}`;
+                    returnMessage.data = results.rows;
+                    res.status(200).json(returnMessage);
+                  }
+                );
+              } else {
+                returnMessage.isError = true;
+                returnMessage.message = `Retailer name is already Existing`;
+                returnMessage.data = results.rows;
+                res.status(400).json(returnMessage);
+              }
+            }
+          );
+        }
       }
     );
   });
 };
-
-// const filterRetailer = async (req, res) => {
-//   const returnMessage = {
-//     isError: true,
-//     data: null,
-//     message: "Error occured",
-//   };
-
-//   // let company_id = parseInt(req.params.company_id);
-//   await pool.connect(function (err) {
-//     if (err) throw err;
-//     pool.query(
-//       "SELECT * FROM rb.retailer_setting WHERE company_id=$1",
-//       [req.params.company_id],
-//       (error, results) => {
-//         if (error) {
-//           throw error;
-//         }
-//         returnMessage.isError = false;
-//         returnMessage.message = "Records found";
-//         returnMessage.data = results.rows;
-//         res.status(200).json(returnMessage);
-//       }
-//     );
-//   });
-// };
-
-// select * from rb.retailer_setting where company_id=128450 OR retailer_state='CT';
 
 module.exports = {
   getRetailer,

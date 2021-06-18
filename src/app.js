@@ -13,14 +13,14 @@ app.use(bodyParser.urlencoded({ extended: true })).use(bodyParser.json());
 
 const port = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res, next) => {
   res.send("Server running Successfully");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  res.end();
+  next();
 });
 
 pool.connect((err) => {

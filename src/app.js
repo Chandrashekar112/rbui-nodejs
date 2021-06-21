@@ -4,7 +4,8 @@ const cors = require("cors");
 const path = require("path");
 
 const pool = require("./controllers/config");
-require("dotenv/config");
+// require("dotenv/config");
+require("dotenv").config();
 
 const app = express();
 
@@ -13,14 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true })).use(bodyParser.json());
 
 const port = process.env.PORT || 5000;
 
-app.get("/", async (req, res, next) => {
+app.get("/", (req, res) => {
   res.send("Server running Successfully");
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.Header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  next();
+  res.end();
 });
 
 pool.connect((err) => {

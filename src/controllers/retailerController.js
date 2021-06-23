@@ -39,6 +39,7 @@ const RetailerState = async (req, res) => {
       returnMessage.message = "Records found";
       returnMessage.data = results.rows;
       res.status(200).json(returnMessage);
+      res.end();
     }
   );
 };
@@ -114,6 +115,7 @@ const CreateRetailer = async (req, res) => {
                   returnMessage.message = "Successfully save the retailer";
                   returnMessage.data = results.rows;
                   res.status(200).json(returnMessage);
+                  res.end();
                 }
               );
             } else {
@@ -195,6 +197,7 @@ const UpdateRetailer = async (req, res) => {
             returnMessage.message = `Successfully Updated the retailer ${company_id}`;
             returnMessage.data = results.rows;
             res.status(200).json(returnMessage);
+            res.end();
           }
         );
       } else {
@@ -232,6 +235,7 @@ const UpdateRetailer = async (req, res) => {
                   returnMessage.message = `Successfully Updated the retailer ${company_id}`;
                   returnMessage.data = results.rows;
                   res.status(200).json(returnMessage);
+                  res.end();
                 }
               );
             } else {

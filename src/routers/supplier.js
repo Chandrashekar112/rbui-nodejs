@@ -2,9 +2,11 @@ const express = require('express');
 
 const router = express.Router();
 
-const { getSupplier,getUnmappedBrands } = require('../controllers/supplierController');
+const { getSupplier,updateSupplier,getUnmappedBrands } = require('../controllers/supplierController');
 
 router.get('/', getSupplier);
-router.get('/unmappedBrands',getUnmappedBrands)
+router.put('/:id', updateSupplier);
+router.get('/unmappedBrands', getUnmappedBrands);
+
 
 module.exports = router;

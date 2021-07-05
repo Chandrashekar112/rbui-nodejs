@@ -18,20 +18,20 @@ const login = async (req, res) => {
         message: "Error occured",
   };
   
-  const password = req.body.password;
-  const saltRounds = 10;
-const myPlaintextPassword = '$2b$10$.hVFokPR0kNZUHs63dGEYOB3Wsm/m3rqk7XE4e0JerBr/wT/z.tc.';
+//   const password = req.body.password;
+//   const saltRounds = 10;
+// const myPlaintextPassword = '12345';
 
-  bcrypt.genSalt(saltRounds,(err, salt)=> {
-    bcrypt.hash(myPlaintextPassword, salt,(err, hash)=> {
-        // Store hash in your password DB.
-      console.log(hash);
-      bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
-        // result == true
-        console.log(result);
-    });
-    });
-  });
+  // bcrypt.genSalt(saltRounds,(err, salt)=> {
+  //   bcrypt.hash(myPlaintextPassword, salt,(err, hash)=> {
+  //       // Store hash in your password DB.
+  //     console.log(hash);
+  //     bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+  //       // result == true
+  //       console.log(result);
+  //   });
+  //   });
+  // });
   
 
     if (validateUser(req.body)) {

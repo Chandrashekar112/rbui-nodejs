@@ -41,6 +41,7 @@ app.use("/v1/api/retailer", retailerRouter);
 app.use("/v1/api/supplier", supplierRouter);
 
 
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("../build"));
   app.get("*", (req, res) => {

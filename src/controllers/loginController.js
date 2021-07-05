@@ -34,8 +34,6 @@ const myPlaintextPassword = '$2b$10$.hVFokPR0kNZUHs63dGEYOB3Wsm/m3rqk7XE4e0JerBr
   });
   
 
-
-
     if (validateUser(req.body)) {
       let token = jwt.sign({ data: req.body }, "secret", { expiresIn: "1h" });
       var decoded = jwt.decode(token);

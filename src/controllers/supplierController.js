@@ -90,9 +90,7 @@ const addSupplier = async(req,res) => {
         message: "Error occured",
     };
     const { supplier, brand} = req.body;
-    let date = new Date();
-    let newDate= new Date(date.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-    let last_updated = moment(newDate).format('YYYY-MM-DD hh:mm:ss');
+  
     await pool.query('INSERT INTO rb.supplier_map2 (supplier,vendor,create_time,last_updated,updated_by) VALUES ($1,$2,sysdate,sysdate,$3)',[supplier,brand,"RBUI"], (error,results) => {
         if (error) throw error;
         returnMessage.isError = false;

@@ -34,20 +34,20 @@ const login = async (req, res) => {
   // });
   
 
-    if (validateUser(req.body)) {
-      let token = jwt.sign({ data: req.body }, "secret", { expiresIn: "1h" });
-      var decoded = jwt.decode(token);
-      // console.log(token, decoded);
-        returnMessage.isError = false;
-        returnMessage.message = `Successfully Login ${req.body.email}`;
-        returnMessage.data = {jwt:token};
-        res.status(200).json(returnMessage);
-        res.end();
-    } else {
-        returnMessage.isError = true;
-        returnMessage.message = "Invalid Credentails";
-        res.status(400).json(returnMessage);
-  }
+  //   if (validateUser(req.body)) {
+  //     let token = jwt.sign({ data: req.body }, "secret", { expiresIn: "1h" });
+  //     var decoded = jwt.decode(token);
+  //     // console.log(token, decoded);
+  //       returnMessage.isError = false;
+  //       returnMessage.message = `Successfully Login ${req.body.email}`;
+  //       returnMessage.data = {jwt:token};
+  //       res.status(200).json(returnMessage);
+  //       res.end();
+  //   } else {
+  //       returnMessage.isError = true;
+  //       returnMessage.message = "Invalid Credentails";
+  //       res.status(400).json(returnMessage);
+  // }
   
   
  

@@ -53,7 +53,7 @@ const login = async (req, res) => {
  
 }
 
-const validateUser = (user) => {
+const validateUser = async (user) => {
   for (let index in USERS) {
         if (
           user.email == USERS[index].email &&

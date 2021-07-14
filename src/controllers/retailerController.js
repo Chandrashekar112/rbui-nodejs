@@ -8,7 +8,7 @@ const getRetailer = async (req, res) => {
   };
 
   await pool.query(
-    "SELECT * FROM rb.retailer_setting2 ORDER BY retailer_name ASC",
+    "SELECT * FROM rb.retailer_setting ORDER BY retailer_name ASC",
     (error, results) => {
       if (error) {
         throw error;
@@ -30,7 +30,7 @@ const RetailerState = async (req, res) => {
   };
 
   await pool.query(
-    "SELECT distinct retailer_state FROM rb.retailer_setting2",
+    "SELECT distinct retailer_state FROM rb.retailer_setting",
     (error, results) => {
       if (error) {
         throw error;
@@ -70,7 +70,7 @@ const CreateRetailer = async (req, res) => {
   } = req.body;
 
   await pool.query(
-    "SELECT * FROM rb.retailer_setting2 WHERE company_id=$1",
+    "SELECT * FROM rb.retailer_setting WHERE company_id=$1",
     [company_id],
     (error, results) => {
       if (error) {
@@ -79,7 +79,7 @@ const CreateRetailer = async (req, res) => {
 
       if (!results.rows.length) {
         pool.query(
-          "SELECT * FROM rb.retailer_setting2 WHERE retailer_name=$1",
+          "SELECT * FROM rb.retailer_setting WHERE retailer_name=$1",
           [retailer_name],
           (error, results) => {
             if (error) {
@@ -88,7 +88,7 @@ const CreateRetailer = async (req, res) => {
 
             if (!results.rows.length) {
               pool.query(
-                "INSERT INTO rb.retailer_setting2 (retailer_name, retailer_state,ccfee_calc_method,include_tax,include_ccfee,shipping_cost_ground,shipping_cost_2day,shipping_cost_overnight,rb_percent_sales,retailer_percent_sales,credit_card_fee_percent,shipping_fedex,shipping_non_fedex,retailer_contrib_free_ship,dw_contrib_free_ship,company_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)",
+                "INSERT INTO rb.retailer_setting (retailer_name, retailer_state,ccfee_calc_method,include_tax,include_ccfee,shipping_cost_ground,shipping_cost_2day,shipping_cost_overnight,rb_percent_sales,retailer_percent_sales,credit_card_fee_percent,shipping_fedex,shipping_non_fedex,retailer_contrib_free_ship,dw_contrib_free_ship,company_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)",
                 [
                   retailer_name,
                   retailer_state,
@@ -161,7 +161,7 @@ const UpdateRetailer = async (req, res) => {
   } = req.body;
 
   await pool.query(
-    "SELECT * FROM rb.retailer_setting2 WHERE retailer_name=$1",
+    "SELECT * FROM rb.retailer_setting WHERE retailer_name=$1",
     [retailer_name],
     (error, results) => {
       if (error) {
@@ -170,7 +170,7 @@ const UpdateRetailer = async (req, res) => {
 
       if (!results.rows.length) {
         pool.query(
-          "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
+          "UPDATE rb.retailer_setting SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
           [
             retailer_name,
             retailer_state,
@@ -202,13 +202,13 @@ const UpdateRetailer = async (req, res) => {
         );
       } else {
         pool.query(
-          "SELECT * FROM rb.retailer_setting2 WHERE company_id=$1",
+          "SELECT * FROM rb.retailer_setting WHERE company_id=$1",
           [company_id],
           (error, results) => {
             if (error) throw error;
             if (results.rows[0].retailer_name === retailer_name) {
               pool.query(
-                "UPDATE rb.retailer_setting2 SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
+                "UPDATE rb.retailer_setting SET retailer_name=$1, retailer_state=$2,ccfee_calc_method=$3,include_tax=$4,include_ccfee=$5,shipping_cost_ground=$6,shipping_cost_2day=$7,shipping_cost_overnight=$8,rb_percent_sales=$9,retailer_percent_sales=$10,credit_card_fee_percent=$11,shipping_fedex=$12,shipping_non_fedex=$13,retailer_contrib_free_ship=$14,dw_contrib_free_ship=$15 WHERE company_id=$16",
                 [
                   retailer_name,
                   retailer_state,

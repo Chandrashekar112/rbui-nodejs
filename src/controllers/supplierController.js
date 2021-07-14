@@ -8,7 +8,7 @@ const getSupplier = async (req, res) => {
         data: null,
         message: "Error occured",
     };
-    await pool.query('select supplier, vendor as brand, last_updated, updated_by from rb.supplier_map2 ORDER BY supplier', (error, results) => {
+    await pool.query('select supplier, vendor as brand, last_updated, updated_by from rb.supplier_map ORDER BY supplier', (error, results) => {
         if (error) throw error;
         returnMessage.isError = false;
         returnMessage.message = "Records found";
@@ -27,7 +27,7 @@ const updateSupplier = async(req, res) => {
     const brand = req.params.id;
     const { supplier } = req.body;
   
-    await pool.query('UPDATE rb.supplier_map2 SET supplier=$1,last_updated=sysdate,updated_by=$2 WHERE vendor=$3', [supplier,"RBUI",brand], (error, results) => {
+    await pool.query('UPDATE rb.supplier_map SET supplier=$1,last_updated=sysdate,updated_by=$2 WHERE vendor=$3', [supplier,"RBUI",brand], (error, results) => {
         if (error) throw error;
         returnMessage.isError = false;
         returnMessage.message = `Successfully Updated the supplier ${brand}`;
@@ -45,7 +45,7 @@ const getUnmappedBrands = async(req, res) => {
         data: null,
         message: "Error occured",
     };
-    await pool.query('SELECT distinct NULL, vendor AS brand, NULL, NULL FROM rb.shopify_order_item WHERE vendor not IN (SELECT vendor FROM rb.supplier_map2)', (error, results) => {
+    await pool.query('SELECT distinct NULL, vendor AS brand, NULL, NULL FROM rb.shopify_order_item WHERE vendor not IN (SELECT vendor FROM rb.supplier_map)', (error, results) => {
         if (error) throw error;
         returnMessage.isError = false;
         returnMessage.message = "Records found";
@@ -66,11 +66,7 @@ const updateUnmappedBrands = async (req, res) => {
 
     const { brand, supplier } = req.body;
 
-    // let date = new Date();
-    // let newDate= new Date(date.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-    // let last_updated = moment(newDate).format('YYYY-MM-DD hh:mm:ss');
-
-    await pool.query("INSERT INTO rb.supplier_map2 (supplier,vendor,create_time,last_updated,updated_by) VALUES ($1,$2,sysdate,sysdate,$3)",[supplier,brand,"RBUI"], (error,results) => {
+    await pool.query("INSERT INTO rb.supplier_map (supplier,vendor,create_time,last_updated,updated_by) VALUES ($1,$2,sysdate,sysdate,$3)",[supplier,brand,"RBUI"], (error,results) => {
         if (error) throw error;
         returnMessage.isError = false;
         returnMessage.message = `Successfully updated the Brand`;
@@ -91,7 +87,7 @@ const addSupplier = async(req,res) => {
     };
     const { supplier, brand} = req.body;
   
-    await pool.query('INSERT INTO rb.supplier_map2 (supplier,vendor,create_time,last_updated,updated_by) VALUES ($1,$2,sysdate,sysdate,$3)',[supplier,brand,"RBUI"], (error,results) => {
+    await pool.query('INSERT INTO rb.supplier_map (supplier,vendor,create_time,last_updated,updated_by) VALUES ($1,$2,sysdate,sysdate,$3)',[supplier,brand,"RBUI"], (error,results) => {
         if (error) throw error;
         returnMessage.isError = false;
         returnMessage.message = "Successfully saved the Brand";

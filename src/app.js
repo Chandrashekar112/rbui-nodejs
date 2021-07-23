@@ -31,11 +31,13 @@ pool.connect((err) => {
   console.log("connected database");
 });
 
+
+const logninRouter = require("./routers/signin");
 const orderRouter = require("./routers/order");
 const retailerRouter = require("./routers/retailer");
 const supplierRouter = require('./routers/supplier');
 
-
+app.use("/v1/api/user",logninRouter);
 app.use("/v1/api/order", orderRouter);
 app.use("/v1/api/retailer", retailerRouter);
 app.use("/v1/api/supplier", supplierRouter);
